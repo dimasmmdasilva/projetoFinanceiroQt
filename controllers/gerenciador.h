@@ -8,7 +8,7 @@ class Gerenciador {
 public:
     bool registrarUsuario(const QString& nome, const QString& login, const QString& senha);
     bool autenticarUsuario(const QString& login, const QString& senha);
-    Usuario* getUsuarioLogado();
+    Usuario* getUsuarioLogado() const;  // const adicionado
 
 private:
     std::vector<Usuario> usuarios;
