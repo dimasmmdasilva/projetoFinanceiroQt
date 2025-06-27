@@ -2,13 +2,28 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
-    <height>592</height>
+    <width>360</width>
+    <height>640</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>360</width>
+    <height>640</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>360</width>
+    <height>640</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -17,17 +32,26 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="currentIndex">
        <number>1</number>
       </property>
       <widget class="QWidget" name="login">
+       <property name="maximumSize">
+        <size>
+         <width>360</width>
+         <height>640</height>
+        </size>
+       </property>
        <widget class="QWidget" name="formLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>250</x>
-          <y>220</y>
-          <width>211</width>
-          <height>141</height>
+          <x>20</x>
+          <y>260</y>
+          <width>291</width>
+          <height>116</height>
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout">
@@ -67,15 +91,43 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="verticalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>140</y>
+          <width>291</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QLabel" name="labelLogo">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
       <widget class="QWidget" name="cadastro">
+       <property name="maximumSize">
+        <size>
+         <width>360</width>
+         <height>640</height>
+        </size>
+       </property>
        <widget class="QWidget" name="formLayoutWidget_2">
         <property name="geometry">
          <rect>
-          <x>210</x>
-          <y>160</y>
-          <width>341</width>
-          <height>201</height>
+          <x>20</x>
+          <y>260</y>
+          <width>291</width>
+          <height>181</height>
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_2">
@@ -135,8 +187,533 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="verticalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>140</y>
+          <width>291</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="labelLogoCadastro">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
-      <widget class="QWidget" name="principal"/>
+      <widget class="QWidget" name="principal">
+       <property name="maximumSize">
+        <size>
+         <width>360</width>
+         <height>640</height>
+        </size>
+       </property>
+       <widget class="QWidget" name="gridLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>291</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="10" column="0" alignment="Qt::AlignmentFlag::AlignHCenter">
+          <widget class="QLabel" name="labelAno">
+           <property name="text">
+            <string>Ano</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="2">
+          <widget class="QSpinBox" name="spinAno">
+           <property name="minimum">
+            <number>2000</number>
+           </property>
+           <property name="maximum">
+            <number>3000</number>
+           </property>
+           <property name="value">
+            <number>2025</number>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QComboBox" name="comboBoxMes">
+           <item>
+            <property name="text">
+             <string>Janeiro</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Fevereiro</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Março</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Abril</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Maio</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Junho</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Julho</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Agosto</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Setembro</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Outubro</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Novembro</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Dezembro</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="11" column="2">
+          <widget class="QLineEdit" name="lineReceita"/>
+         </item>
+         <item row="4" column="0" alignment="Qt::AlignmentFlag::AlignHCenter">
+          <widget class="QLabel" name="labelMes">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Mês</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="0" alignment="Qt::AlignmentFlag::AlignHCenter">
+          <widget class="QLabel" name="labelReceita">
+           <property name="text">
+            <string>Receita Total</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="0" colspan="3">
+          <widget class="QPushButton" name="pushConfirmar">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Confirmar</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>160</y>
+          <width>291</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Despesas</string>
+        </property>
+        <layout class="QFormLayout" name="formLayout_3">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelValor">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Valor</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineValor">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboBoxCategoria">
+           <item>
+            <property name="text">
+             <string>Alimentação</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Equipamentos</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Academia</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Suplementos</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Vestimentas</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Show</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Presente</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Diversão</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Investimento</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Mercado</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Farmácia</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Consulta Médica</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Medicamentos</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Combustível</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Revisão Carro/Moto</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Celular</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Internet</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Assinatura Streaming</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Shopping</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Restaurante</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Churrasco</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Festa</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelCategoria">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Categoria</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QPushButton" name="pushAdicionar">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Adicionar</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="gridLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>291</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelSaudacao">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="pushSair">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Sair</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QTableWidget" name="tableDespesas">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>280</y>
+          <width>291</width>
+          <height>192</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>291</width>
+          <height>192</height>
+         </size>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>false</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string>Valor</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Categoria</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>%</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>470</y>
+          <width>291</width>
+          <height>91</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Resumo do Mês</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelTotalGasto">
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Total Gasto</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="labelValorTotalGasto">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelSaldoAtual">
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Saldo Atual</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="labelValorSaldoAtual">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="labelPorcentagemTotalGasto">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="labelPorcentagemSaldoAtual">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -146,8 +723,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>810</width>
-     <height>25</height>
+     <width>360</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
