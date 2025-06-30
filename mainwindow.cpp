@@ -1,80 +1,90 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <QMessageBox>
-#include <QString>
 #include <QTableWidgetItem>
 #include <QFont>
 
+// Construtor
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    // Configura o logo ASCII
-    QString logo = R"(╔══════════════════════╗
-║       CF 1.0         ║
-║ Controle Financeiro  ║
-╚══════════════════════╝)";
+    // Configura o logotipo ASCII nos labels
+    configurarLogo(ui->labelLogo);
+    configurarLogo(ui->labelLogoCadastro);
 
-    ui->labelLogo->setText(logo);
-
-    QFont fonte("Courier New");
-    fonte.setStyleHint(QFont::Monospace);
-    fonte.setPointSize(10);
-    ui->labelLogo->setFont(fonte);
-    ui->labelLogo->setAlignment(Qt::AlignCenter);
-    ui->labelLogo->setWordWrap(true);
-
-    // Aplica cor verde clara ao texto do logo
-    ui->labelLogo->setStyleSheet("color: #90ee90;");
-
-    // Configura o logo ASCII da tela de cadastro
-    QString logoCadastro = R"(╔══════════════════════╗
-║       CF 1.0         ║
-║ Controle Financeiro  ║
-╚══════════════════════╝)";
-
-    QFont fonteLogo("Courier New");
-    fonteLogo.setStyleHint(QFont::Monospace);
-    fonteLogo.setPointSize(10);
-
-    ui->labelLogoCadastro->setText(logoCadastro);
-    ui->labelLogoCadastro->setFont(fonteLogo);
-    ui->labelLogoCadastro->setAlignment(Qt::AlignCenter);
-    ui->labelLogoCadastro->setWordWrap(true);
-    ui->labelLogoCadastro->setStyleSheet("color: lightgreen;");
-
-
-    // Configura a tabela de despesas
+    // Configura tabela de despesas
     ui->tableDespesas->setColumnCount(3);
     ui->tableDespesas->setHorizontalHeaderLabels({"Valor", "Categoria", "%"});
     ui->tableDespesas->horizontalHeader()->setStretchLastSection(true);
+
+    // Oculta a senha ao digitar
+    ui->linePassword->setEchoMode(QLineEdit::Password);
+
+    // Conecta mudanças de mês e ano
+    connect(ui->comboBoxMes, &QComboBox::currentIndexChanged, this, &MainWindow::on_mesOuAnoAlterado);
+    connect(ui->spinAno, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::on_mesOuAnoAlterado);
 }
 
-MainWindow::~MainWindow()
-{
+// Destrutor
+MainWindow::~MainWindow() {
     delete ui;
 }
 
+// ==============================
+// === Sessão e Navegação ======
+// ==============================
+
+// Login
 void MainWindow::on_pushEntrar_clicked()
 {
     QString login = ui->lineLogin->text();
     QString senha = ui->linePassword->text();
 
     if (gerenciador.autenticarUsuario(login, senha)) {
-        Usuario* u = gerenciador.getUsuarioLogado();
-        ui->labelSaudacao->setText("Olá, " + u->getNome());
-        ui->stackedWidget->setCurrentIndex(2); // Vai para tela principal
+        carregarNomeUsuario();
+        ui->stackedWidget->setCurrentIndex(2);
+        on_mesOuAnoAlterado();  // Carrega automaticamente receita e despesas
     } else {
         QMessageBox::warning(this, "Erro de login", "Login ou senha incorretos.");
     }
 }
 
-void MainWindow::on_pushCadastrar_clicked()
+// Logout
+void MainWindow::on_pushSair_clicked()
 {
-    ui->stackedWidget->setCurrentIndex(1); // Vai para tela de cadastro
+    receitaMensal = 0.0;
+    listaDespesas.clear();
+    ui->tableDespesas->clearContents();
+    ui->tableDespesas->setRowCount(0);
+    gerenciador.logout();
+
+    // Limpa campos de login
+    ui->lineLogin->clear();
+    ui->linePassword->clear();
+
+    ui->stackedWidget->setCurrentIndex(0);
 }
+
+// Ir para tela de cadastro
+void MainWindow::on_pushCadastrar_clicked() {
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+// Voltar da tela de cadastro para login
+void MainWindow::on_pushVoltar_clicked()
+{
+    ui->lineNome->clear();
+    ui->lineLoginCadastro->clear();
+    ui->lineSenha->clear();
+    ui->lineConfirmarSenha->clear();
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+// ==============================
+// === Cadastro de Usuário =====
+// ==============================
 
 void MainWindow::on_pushEnviar_clicked()
 {
@@ -99,40 +109,27 @@ void MainWindow::on_pushEnviar_clicked()
     }
 
     QMessageBox::information(this, "Sucesso", "Usuário cadastrado com sucesso!");
-
-    // Limpa campos
-    ui->lineNome->clear();
-    ui->lineLoginCadastro->clear();
-    ui->lineSenha->clear();
-    ui->lineConfirmarSenha->clear();
-
-    ui->stackedWidget->setCurrentIndex(0); // Retorna para tela de login
+    on_pushVoltar_clicked();
 }
 
-void MainWindow::on_pushVoltar_clicked()
-{
-    // Limpa campos
-    ui->lineNome->clear();
-    ui->lineLoginCadastro->clear();
-    ui->lineSenha->clear();
-    ui->lineConfirmarSenha->clear();
-
-    ui->stackedWidget->setCurrentIndex(0); // Retorna para login
-}
-
-void MainWindow::on_pushSair_clicked()
-{
-    receitaMensal = 0.0;
-    listaDespesas.clear();
-    ui->tableDespesas->clearContents();
-    ui->tableDespesas->setRowCount(0);
-    gerenciador.logout();
-    ui->stackedWidget->setCurrentIndex(0); // Volta ao login
-}
+// ==============================
+// === Receita e Despesas ======
+// ==============================
 
 void MainWindow::on_pushConfirmar_clicked()
 {
     receitaMensal = ui->lineReceita->text().toDouble();
+    mesSelecionado = ui->comboBoxMes->currentIndex();
+    anoSelecionado = ui->spinAno->value();
+
+    Usuario* u = gerenciador.getUsuarioLogado();
+    if (!u) return;
+
+    if (!gerenciador.salvarReceita(u->getId(), mesSelecionado, anoSelecionado, receitaMensal)) {
+        QMessageBox::warning(this, "Erro", "Erro ao salvar receita.");
+        return;
+    }
+
     atualizarTotais();
 }
 
@@ -146,11 +143,91 @@ void MainWindow::on_pushAdicionar_clicked()
         return;
     }
 
-    listaDespesas.push_back({categoria, valor});
+    Usuario* u = gerenciador.getUsuarioLogado();
+    if (!u) return;
+
+    if (!gerenciador.salvarDespesa(u->getId(), mesSelecionado, anoSelecionado, categoria, valor)) {
+        QMessageBox::warning(this, "Erro", "Erro ao salvar despesa.");
+        return;
+    }
+
+    listaDespesas = gerenciador.obterDespesas(u->getId(), mesSelecionado, anoSelecionado);
     atualizarTabelaDespesas();
     atualizarTotais();
     limparCamposDespesa();
 }
+
+void MainWindow::on_pushLimpar_clicked()
+{
+    Usuario* u = gerenciador.getUsuarioLogado();
+    if (!u) return;
+
+    if (!gerenciador.removerDespesas(u->getId(), mesSelecionado, anoSelecionado)) {
+        QMessageBox::warning(this, "Erro", "Erro ao apagar despesas.");
+        return;
+    }
+
+    listaDespesas.clear();
+    ui->tableDespesas->clearContents();
+    ui->tableDespesas->setRowCount(0);
+    atualizarTotais();
+}
+
+// Ao alterar mês ou ano: carrega nova receita e despesas
+void MainWindow::on_mesOuAnoAlterado()
+{
+    Usuario* u = gerenciador.getUsuarioLogado();
+    if (!u) return;
+
+    mesSelecionado = ui->comboBoxMes->currentIndex();
+    anoSelecionado = ui->spinAno->value();
+
+    receitaMensal = gerenciador.obterReceita(u->getId(), mesSelecionado, anoSelecionado);
+    ui->lineReceita->setText(QString::number(receitaMensal, 'f', 2));
+
+    listaDespesas = gerenciador.obterDespesas(u->getId(), mesSelecionado, anoSelecionado);
+    atualizarTabelaDespesas();
+    atualizarTotais();
+}
+
+// ==============================
+// === Atualizações Visuais ====
+// ==============================
+
+void MainWindow::atualizarTabelaDespesas()
+{
+    ui->tableDespesas->setRowCount(listaDespesas.size());
+
+    for (int i = 0; i < listaDespesas.size(); ++i) {
+        const Despesa& d = listaDespesas[i];
+        double perc = receitaMensal > 0 ? (d.valor / receitaMensal) * 100.0 : 0.0;
+
+        ui->tableDespesas->setItem(i, 0, new QTableWidgetItem(QString::number(d.valor, 'f', 2)));
+        ui->tableDespesas->setItem(i, 1, new QTableWidgetItem(d.categoria));
+        ui->tableDespesas->setItem(i, 2, new QTableWidgetItem(QString::number(perc, 'f', 1) + "%"));
+    }
+}
+
+void MainWindow::atualizarTotais()
+{
+    double total = 0.0;
+    for (const auto& d : listaDespesas)
+        total += d.valor;
+
+    double saldo = receitaMensal - total;
+    double percGasto = receitaMensal > 0 ? (total / receitaMensal) * 100.0 : 0.0;
+    double percSaldo = receitaMensal > 0 ? (saldo / receitaMensal) * 100.0 : 0.0;
+
+    ui->labelValorTotalGasto->setText("R$ " + QString::number(total, 'f', 2));
+    ui->labelPorcentagemTotalGasto->setText(QString::number(percGasto, 'f', 1) + "%");
+
+    ui->labelValorSaldoAtual->setText("R$ " + QString::number(saldo, 'f', 2));
+    ui->labelPorcentagemSaldoAtual->setText(QString::number(percSaldo, 'f', 1) + "%");
+}
+
+// ==============================
+// === Utilitários =============
+// ==============================
 
 void MainWindow::limparCamposDespesa()
 {
@@ -158,33 +235,27 @@ void MainWindow::limparCamposDespesa()
     ui->comboBoxCategoria->setCurrentIndex(0);
 }
 
-void MainWindow::atualizarTabelaDespesas()
+void MainWindow::carregarNomeUsuario()
 {
-    ui->tableDespesas->setRowCount(static_cast<int>(listaDespesas.size()));
-
-    for (int i = 0; i < static_cast<int>(listaDespesas.size()); ++i) {
-        const auto& despesa = listaDespesas[i];
-        double porcentagem = receitaMensal > 0 ? (despesa.valor / receitaMensal) * 100.0 : 0.0;
-
-        ui->tableDespesas->setItem(i, 0, new QTableWidgetItem(QString::number(despesa.valor, 'f', 2)));
-        ui->tableDespesas->setItem(i, 1, new QTableWidgetItem(despesa.categoria));
-        ui->tableDespesas->setItem(i, 2, new QTableWidgetItem(QString::number(porcentagem, 'f', 1) + "%"));
-    }
+    Usuario* u = gerenciador.getUsuarioLogado();
+    if (u)
+        ui->labelSaudacao->setText("Olá, " + u->getNome());
 }
 
-void MainWindow::atualizarTotais()
+void MainWindow::configurarLogo(QLabel* label)
 {
-    double totalGasto = 0.0;
-    for (const auto& d : listaDespesas)
-        totalGasto += d.valor;
+    QString logo = R"(╔══════════════════════╗
+║       CF 1.0         ║
+║ Controle Financeiro  ║
+╚══════════════════════╝)";
 
-    double saldo = receitaMensal - totalGasto;
-    double percGasto = receitaMensal > 0 ? (totalGasto / receitaMensal) * 100.0 : 0.0;
-    double percSaldo = receitaMensal > 0 ? (saldo / receitaMensal) * 100.0 : 0.0;
+    QFont fonte("Courier New");
+    fonte.setStyleHint(QFont::Monospace);
+    fonte.setPointSize(10);
 
-    ui->labelValorTotalGasto->setText("R$ " + QString::number(totalGasto, 'f', 2));
-    ui->labelPorcentagemTotalGasto->setText(QString::number(percGasto, 'f', 1) + "%");
-
-    ui->labelSaldoAtual->setText("R$ " + QString::number(saldo, 'f', 2));
-    ui->labelPorcentagemSaldoAtual->setText(QString::number(percSaldo, 'f', 1) + "%");
+    label->setText(logo);
+    label->setFont(fonte);
+    label->setAlignment(Qt::AlignCenter);
+    label->setWordWrap(true);
+    label->setStyleSheet("color: lightgreen;");
 }
