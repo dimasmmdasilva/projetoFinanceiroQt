@@ -14,6 +14,13 @@ MainWindow::MainWindow(QWidget *parent)
     configurarLogo(ui->labelLogo);
     configurarLogo(ui->labelLogoCadastro);
 
+    // Assinatura do autor
+    ui->labelAutor->setText("Desenvolvido por DimasMMS");
+    QFont fonteAutor("Arial", 8);
+    ui->labelAutor->setFont(fonteAutor);
+    ui->labelAutor->setStyleSheet("color: yellow;");
+    ui->labelAutor->setAlignment(Qt::AlignCenter);
+
     // Configura tabela de despesas
     ui->tableDespesas->setColumnCount(3);
     ui->tableDespesas->setHorizontalHeaderLabels({"Valor", "Categoria", "%"});
@@ -259,3 +266,4 @@ void MainWindow::configurarLogo(QLabel* label)
     label->setWordWrap(true);
     label->setStyleSheet("color: lightgreen;");
 }
+
