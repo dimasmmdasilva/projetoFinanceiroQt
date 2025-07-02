@@ -40,7 +40,7 @@ MainWindow::~MainWindow() {
 }
 
 // ==============================
-// === Sessão e Navegação ======
+// === Sessão e Navegação =======
 // ==============================
 
 // Login
@@ -90,7 +90,7 @@ void MainWindow::on_pushVoltar_clicked()
 }
 
 // ==============================
-// === Cadastro de Usuário =====
+// === Cadastro de Usuário ======
 // ==============================
 
 void MainWindow::on_pushEnviar_clicked()
@@ -120,7 +120,7 @@ void MainWindow::on_pushEnviar_clicked()
 }
 
 // ==============================
-// === Receita e Despesas ======
+// === Receita e Despesas =======
 // ==============================
 
 void MainWindow::on_pushConfirmar_clicked()
@@ -198,7 +198,7 @@ void MainWindow::on_mesOuAnoAlterado()
 }
 
 // ==============================
-// === Atualizações Visuais ====
+// === Atualizações Visuais =====
 // ==============================
 
 void MainWindow::atualizarTabelaDespesas()
@@ -233,7 +233,7 @@ void MainWindow::atualizarTotais()
 }
 
 // ==============================
-// === Utilitários =============
+// === Utilitários ==============
 // ==============================
 
 void MainWindow::limparCamposDespesa()
